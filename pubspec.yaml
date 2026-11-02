@@ -1,0 +1,28 @@
+name: vibra_eventos
+description: "VIBRA - aplicativo de eventos e festas."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  carousel_slider: ^5.1.2 # Banners com passagem automática e controle manual.
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true # Inclui os ícones Material.
+  assets:
+    - assets/images/logo_vibra.png # Logo central do cabeçalho.
+    - assets/images/banner_eletro_music.png # Primeiro banner.
+    - assets/images/banner_festival_neon.png # Segundo banner.
+    - assets/images/banner_electronic_fest.png # Terceiro banner.
+    - assets/images/evento_lana_del_rey.png # Foto do card da Lana Del Rey.
+    - assets/images/evento_pop_tropical.png # Foto do card da Zara Larsson.
+    - assets/images/evento_future_nostalgia.png # Foto do card da Dua Lipa.

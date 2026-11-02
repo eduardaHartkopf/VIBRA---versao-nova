@@ -1,0 +1,18 @@
+# Arquivos gerados pelo Flutter e pelas ferramentas de desenvolvimento.
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+coverage/
+.idea/
+*.iml
+*.log
+.DS_Store
+android/local.properties
+android/.gradle/
+android/.cxx/
+android/app/debug/
+android/app/profile/
+android/app/release/
