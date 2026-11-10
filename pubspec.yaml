@@ -10,6 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
   carousel_slider: ^5.1.2 # Banners com passagem automática e controle manual.
+  flutter_map: ^8.3.2
+  latlong2: ^0.10.1
+  sqflite_common_ffi: ^2.4.6
+  path_provider: ^2.1.6
+  path: ^1.9.1
 
 dev_dependencies:
   flutter_test:

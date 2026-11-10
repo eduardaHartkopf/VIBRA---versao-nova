@@ -2,9 +2,23 @@ import 'package:flutter/material.dart'; // Componentes da tela inicial.
 import '../widgets/banners_carrossel.dart'; // Banners com troca automática.
 import '../widgets/lista_eventos.dart'; // Lista com os três cards de eventos.
 
-class InicioPage extends StatelessWidget {
-  // Página inicial do aplicativo de eventos.
-  const InicioPage({super.key}); // Cria a página sem dados externos.
+class InicioPage extends StatefulWidget {
+  const InicioPage({super.key});
+
+  @override
+  State<InicioPage> createState() => _InicioPage();
+}
+
+class _InicioPage extends State<InicioPage> {
+  final TextEditingController _pesquisaController = TextEditingController();
+
+  String _termoPesquisa = '';
+
+  @override
+  void dispose() {
+    _pesquisaController.dispose();
+    super.dispose();
+  }
 
   @override // Define o conteúdo da página.
   Widget build(BuildContext context) {
@@ -161,7 +175,25 @@ class InicioPage extends StatelessWidget {
             ), // Fecha o texto do subtítulo.
             const SizedBox(
                 height: 24), // Separa a apresentação da lista de eventos.
-            const ListaEventos(), // Exibe os três cards abaixo da apresentação.
+            TextField(
+              controller: _pesquisaController,
+              decoration: InputDecoration(
+                hintText: 'Buscar Evento',
+                prefixIcon: const Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                filled: true,
+              ),
+              
+              onChanged: (value) {
+                setState(() {
+                  _termoPesquisa = value.trim().toLowerCase();
+                });
+              },
+            ),
+            const SizedBox(height: 16),
+            ListaEventos(termoPesquisa: _termoPesquisa), // Exibe os três cards abaixo da apresentação.
             const SizedBox(height: 24), // Deixa espaço depois do último evento.
           ], // Fecha os elementos da página.
         ), // Fecha a lista rolável.

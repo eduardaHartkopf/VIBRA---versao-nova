@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart'; // Componentes e tema do Flutter.
 import 'pages/inicio_page.dart'; // Tela inicial com os banners e eventos.
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  sqfliteFfiInit();
+
+  databaseFactory = databaseFactoryFfi;
+  
   // Ponto de entrada do aplicativo.
   runApp(const VibraApp()); // Inicia o aplicativo VIBRA.
 } // Fecha a inicialização.
