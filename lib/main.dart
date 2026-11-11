@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart'; // Componentes e tema do Flutter.
+import 'package:flutter/foundation.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart'
+  show databaseFactoryFfi, sqfliteFfiInit;
+import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 import 'pages/inicio_page.dart'; // Tela inicial com os banners e eventos.
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  sqfliteFfiInit();
+  if(kIsWeb) {
+    databaseFactory = databaseFactoryFfiWeb;
+  } else if(defaultTargetPlatform == TargetPlatform.windows) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
 
-  databaseFactory = databaseFactoryFfi;
-  
-  // Ponto de entrada do aplicativo.
-  runApp(const VibraApp()); // Inicia o aplicativo VIBRA.
-} // Fecha a inicialização.
+  runApp(const VibraApp());
+}
 
 class VibraApp extends StatelessWidget {
   // Configura o aplicativo inteiro.

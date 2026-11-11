@@ -1,5 +1,7 @@
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:path/path.dart';
 
 import '../models/evento.dart';
@@ -62,9 +64,18 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    final diretorio = await getApplicationDocumentsDirectory();
 
-    final caminho = join(diretorio.path, 'vibra.db');
+    final String caminho;
+
+    if(kIsWeb) {
+      caminho = 'vibra.db';
+    } else {
+      final diretorio = await getApplicationDocumentsDirectory();
+
+       
+      caminho = join(diretorio.path, 'vibra.db');
+    }
+      
 
     return await databaseFactory.openDatabase(
       caminho,
