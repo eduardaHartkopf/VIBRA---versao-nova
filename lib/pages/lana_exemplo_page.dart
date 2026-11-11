@@ -25,8 +25,16 @@ class EventoDetalhesPage extends StatelessWidget {
     );
     if (!context.mounted || dados == null) return;
     onInscricao({...dados, 'eventoId': evento.id, 'eventoNome': evento.nome});
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Inscrição confirmada!')));
+    final navigator = Navigator.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Inscrição confirmada!'),
+        action: SnackBarAction(
+          label: 'Ver',
+          onPressed: () => navigator.pushNamed<void>(MenuVibra.rotaConvidados),
+        ),
+      ),
+    );
   }
 
   @override
@@ -134,7 +142,9 @@ class EventoDetalhesPage extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: SizedBox(
-                  height: 260,
+                  height: (MediaQuery.sizeOf(context).height * 0.4)
+                      .clamp(160.0, 400.0)
+                      .toDouble(),
                   child: FlutterMap(
                     options: MapOptions(
                       initialCenter: ponto,

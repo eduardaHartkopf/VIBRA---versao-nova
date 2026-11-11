@@ -32,6 +32,17 @@ class _ConvidadosPageState extends State<ConvidadosPage> {
         widget.convidados[index] = {...widget.convidados[index], ...resultado};
       }
     });
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          index == null
+              ? 'Convidado adicionado.'
+              : 'Dados do convidado atualizados.',
+        ),
+      ),
+    );
   }
 
   Future<void> _excluir(int index) async {
@@ -59,6 +70,11 @@ class _ConvidadosPageState extends State<ConvidadosPage> {
     );
     if (!mounted || excluir != true) return;
     setState(() => widget.convidados.removeAt(index));
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(content: Text('$nome foi removido da lista.')),
+    );
   }
 
   @override

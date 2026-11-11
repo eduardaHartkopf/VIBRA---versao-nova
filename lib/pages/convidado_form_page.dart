@@ -132,8 +132,15 @@ class _ConvidadoFormPageState extends State<ConvidadoFormPage> {
                   ),
                   const SizedBox(height: 16),
                   if (widget.evento == null)
-                    SwitchListTile.adaptive(
-                      contentPadding: EdgeInsets.zero,
+                    SwitchListTile(
+                      tileColor: const Color(0xFF211B2C),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      activeThumbColor: Colors.black,
+                      activeTrackColor: const Color(0xFFB794F6),
+                      inactiveThumbColor: Colors.white,
+                      inactiveTrackColor: const Color(0xFF50465D),
                       title: const Text('Presença confirmada'),
                       subtitle: const Text(
                         'Inclui o convidado e seus acompanhantes no total.',
