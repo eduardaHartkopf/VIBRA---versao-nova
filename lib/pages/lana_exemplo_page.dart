@@ -1,123 +1,177 @@
-import 'package:flutter/material.dart'; // Componentes da tela de exemplo.
+import 'package:flutter/material.dart';
+
+import '../widgets/menu_vibra.dart';
+
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-class LanaExemploPage extends StatefulWidget {
-  // Cria a segunda página com o exemplo do contador.
-  const LanaExemploPage({super.key}); // Permite abrir a tela sem parâmetros.
+import '../models/evento.dart';
+import '../widgets/dados_evento.dart';
+import 'convidado_form_page.dart';
 
-  @override // Define o estado da página.
-  State<LanaExemploPage> createState() =>
-      _LanaExemploPageState(); // Cria o estado que guarda o contador.
-} // Fecha a definição da página.
+class EventoDetalhesPage extends StatelessWidget {
+  const EventoDetalhesPage({
+    super.key,
+    required this.evento,
+    required this.onInscricao,
+  });
 
-class _LanaExemploPageState extends State<LanaExemploPage> {
-  @override // Define a aparência da segunda página.
+  final Evento evento;
+  final ValueChanged<Map<String, dynamic>> onInscricao;
+
+  Future<void> _inscrever(BuildContext context) async {
+    final dados = await Navigator.of(context).push<Map<String, dynamic>>(
+      MaterialPageRoute(builder: (_) => ConvidadoFormPage(evento: evento.nome)),
+    );
+    if (!context.mounted || dados == null) return;
+    onInscricao({...dados, 'eventoId': evento.id, 'eventoNome': evento.nome});
+    ScaffoldMessenger.of(context)
+        .showSnackBar(const SnackBar(content: Text('Inscrição confirmada!')));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Constrói o exemplo padrão de contador.
+    final tema = Theme.of(context);
+    const destaque = Color(0xFFB794F6);
+    const ponto = LatLng(-26.77909100084578, -51.050264281978805);
+    final localDetalhado = evento.local.toLowerCase().contains(
+      'parque das arauc',
+    );
+    final descricao =
+        evento.nome.startsWith('Zara Larsson') &&
+            evento.descricao ==
+                'Prepare-se para uma noite inesquecível ao som de Lana Del Rey!'
+        ? 'Uma apresentação de Zara Larsson com seus sucessos pop.'
+        : evento.descricao;
+
     return Scaffold(
-      // Cria a estrutura da segunda tela.
       appBar: AppBar(
-        // Cria o cabeçalho com a seta automática de voltar.
-        title: const Text(
-            'Lana Del Rey - Palco Mundo'), // Identifica a página aberta pelo card.
-        backgroundColor: Colors.black, // Mantém o fundo preto do aplicativo.
-        foregroundColor: Colors.white, // Mantém o título e a seta brancos.
-      ), // Fecha o cabeçalho da segunda tela.
-      body: Center(
-          // Centraliza o conteúdo na página.
-          child: Card(
-        child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Row(children: [
-            Image.asset(
-              'assets/images/evento_lana_del_rey.png',
-              width: 300,
-              height: 200,
-              fit: BoxFit.contain,
-            ),
-            const Expanded(
-                child: Padding(
-              padding: EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        title: const Text('Detalhes do evento'),
+        actions: const [BotaoMenuVibra()],
+      ),
+      endDrawer: const MenuVibra(),
+      body: Align(
+        alignment: Alignment.topCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 880),
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: AspectRatio(
+                  aspectRatio: 16 / 9,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Image.asset(evento.imagem, fit: BoxFit.cover),
+                      const DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [Colors.transparent, Colors.black87],
+                            stops: [0.28, 1],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 20,
+                        right: 20,
+                        bottom: 18,
+                        child: Text(
+                          evento.nome,
+                          style: tema.textTheme.headlineMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Wrap(
+                spacing: 10,
+                runSpacing: 8,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(Icons.location_on_outlined,
-                          size: 20, color: Color(0xFFB794F6)),
-                      SizedBox(width: 5),
-                      Text('Parque das Araucarias - Caçador/SC'),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_month_outlined,
-                          size: 20, color: Color(0xFFB794F6)),
-                      SizedBox(width: 5),
-                      Text('07.09.2027'),
-                      SizedBox(width: 5),
-                      Icon(Icons.access_time_outlined,
-                          size: 20, color: Color(0xFFB794F6)),
-                      SizedBox(width: 5),
-                      Text('16:00')
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                      'Prepare-se para uma noite inesquecível ao som de Lana Del Rey!'),
-                  SizedBox(height: 10),
-                  Text(
-                      'Venha viver uma experiência musical única, repleta de emoção, romantismo e grandes sucessos. Uma apresentação especial que promete transportar o público para a atmosfera nostálgica e envolvente de suas músicas. Não perca essa oportunidade!')
+                  for (final (icone, texto) in dadosEvento(evento))
+                    Chip(
+                      avatar: Icon(icone, color: corDadosEvento, size: 18),
+                      label: Text(texto),
+                    ),
                 ],
               ),
-            ))
-          ]),
-          const SizedBox(height: 10),
-          const Divider(
-            color: Color(0xFFB794F6),
-            thickness: 1,
-            height: 20,
-            indent: 0,
-            endIndent: 0,
-          ),
-          const SizedBox(height: 16),
-          const Text('Localização do Evento'),
-          const SizedBox(height: 16,),
-          SizedBox(
-              height: 250,
-              width: double.infinity,
-              child: FlutterMap(
-                options: const MapOptions(
-                  initialCenter:
-                      LatLng(-26.77909100084578, -51.050264281978805),
-                  initialZoom: 15,
+              const SizedBox(height: 16),
+              FilledButton.icon(
+                style: FilledButton.styleFrom(
+                  backgroundColor: destaque,
+                  foregroundColor: Colors.black,
+                  minimumSize: const Size.fromHeight(52),
                 ),
-                children: [
-                  TileLayer(
-                    urlTemplate:
-                        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'com.example.vibra',
+                onPressed: () => _inscrever(context),
+                icon: const Icon(Icons.how_to_reg),
+                label: const Text('Inscrever-se no evento'),
+              ),
+              const SizedBox(height: 28),
+              Text('Sobre o evento', style: tema.textTheme.titleLarge),
+              const SizedBox(height: 8),
+              Text(descricao, style: tema.textTheme.bodyLarge),
+              const SizedBox(height: 28),
+              Text(
+                localDetalhado ? 'Local do evento' : 'Mapa de referência',
+                style: tema.textTheme.titleLarge,
+              ),
+              if (!localDetalhado)
+                const Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Text(
+                    'Mapa da região de Caçador/SC. O endereço exato do evento ainda não foi informado.',
                   ),
-                  const MarkerLayer(
-                    markers: [
-                      Marker(
-                          point:
-                              LatLng(-26.77909100084578, -51.050264281978805),
-                          width: 50,
-                          height: 50,
-                          child: Icon(
-                            Icons.location_on,
-                            color: Colors.red,
-                            size: 40,
-                          ))
+                ),
+              const SizedBox(height: 8),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: SizedBox(
+                  height: 260,
+                  child: FlutterMap(
+                    options: MapOptions(
+                      initialCenter: ponto,
+                      initialZoom: localDetalhado ? 15 : 12,
+                    ),
+                    children: [
+                      TileLayer(
+                        urlTemplate:
+                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                        userAgentPackageName: 'com.example.vibra',
+                      ),
+                      if (localDetalhado)
+                        const MarkerLayer(
+                          markers: [
+                            Marker(
+                              point: ponto,
+                              width: 48,
+                              height: 48,
+                              child: Icon(
+                                Icons.location_on,
+                                color: destaque,
+                                size: 40,
+                              ),
+                            ),
+                          ],
+                        ),
+                      const SimpleAttributionWidget(
+                        source: Text('© OpenStreetMap contributors'),
+                      ),
                     ],
-                  )
-                ],
-              ))
-        ]),
-      )), // Fecha o conteúdo centralizado.
-    ); // Retorna a segunda tela montada.
-  } // Fecha a construção visual da página.
-} // Fecha o estado da segunda tela.
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

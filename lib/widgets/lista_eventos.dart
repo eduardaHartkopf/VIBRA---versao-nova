@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../pages/lana_exemplo_page.dart';
 import '../database/database_helper.dart';
 import '../models/evento.dart';
@@ -8,9 +9,11 @@ class ListaEventos extends StatelessWidget {
   const ListaEventos({
     super.key,
     required this.termoPesquisa,
+    required this.onInscricao,
   });
 
   final String termoPesquisa;
+  final ValueChanged<Map<String, dynamic>> onInscricao;
 
   @override
   Widget build(BuildContext context) {
@@ -33,15 +36,11 @@ class ListaEventos extends StatelessWidget {
 
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (snapshot.hasError) {
-              return const Center(
-                child: Text('Erro ao carregar os eventos.'),
-              );
+              return const Center(child: Text('Erro ao carregar os eventos.'));
             }
 
             final eventos = snapshot.data ?? [];
@@ -49,9 +48,7 @@ class ListaEventos extends StatelessWidget {
             if (eventos.isEmpty) {
               return const Padding(
                 padding: EdgeInsets.all(16),
-                child: Center(
-                  child: Text('Nenhum evento encontrado.'),
-                ),
+                child: Center(child: Text('Nenhum evento encontrado.')),
               );
             }
 
@@ -64,20 +61,15 @@ class ListaEventos extends StatelessWidget {
                 final evento = eventos[index];
 
                 return CardEvento(
-                  nome: evento.nome,
-                  imagem: evento.imagem,
-
-                  onTap: evento.nome == 'Lana Del Rey | Festival'
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute<void>(
-                              builder: (context) =>
-                                  const LanaExemploPage(),
-                            ),
-                          );
-                        }
-                      : null,
+                  evento: evento,
+                  onTap: () => Navigator.of(context).push<void>(
+                    MaterialPageRoute<void>(
+                      builder: (_) => EventoDetalhesPage(
+                        evento: evento,
+                        onInscricao: onInscricao,
+                      ),
+                    ),
+                  ),
                 );
               },
             );

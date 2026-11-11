@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart'; // Componentes da tela inicial.
+
 import '../widgets/banners_carrossel.dart'; // Banners com troca automática.
 import '../widgets/lista_eventos.dart'; // Lista com os três cards de eventos.
 
+import '../widgets/menu_vibra.dart';
+
 class InicioPage extends StatefulWidget {
-  const InicioPage({super.key});
+  const InicioPage({super.key, required this.convidados});
+
+  final List<Map<String, dynamic>> convidados;
 
   @override
   State<InicioPage> createState() => _InicioPage();
@@ -13,7 +18,6 @@ class _InicioPage extends State<InicioPage> {
   final TextEditingController _pesquisaController = TextEditingController();
 
   String _termoPesquisa = '';
-
   @override
   void dispose() {
     _pesquisaController.dispose();
@@ -40,101 +44,26 @@ class _InicioPage extends State<InicioPage> {
         shape: const Border(
           // Define uma borda no cabeçalho.
           bottom: BorderSide(
-              color: Colors.white,
-              width: 1), // Desenha uma linha branca fina na parte inferior.
+            color: Colors.white,
+            width: 1,
+          ), // Desenha uma linha branca fina na parte inferior.
         ), // Fecha a borda do cabeçalho.
         title: Semantics(
           // Acrescenta uma descrição para leitores de tela.
-          label:
-              'VIBRA — Eventos e festas', // Nome da marca anunciado pelos leitores de tela.
+          label: 'VIBRA — Eventos e festas', // Nome da marca anunciado pelos leitores de tela.
           child: Image.asset(
             // Carrega a logo incluída nos arquivos do aplicativo.
             'assets/images/logo_vibra.png', // Caminho da imagem registrado no pubspec.yaml.
             width: 140, // Define a largura disponível para a logo.
             height: 48, // Mantém a logo dentro da altura da barra superior.
-            fit: BoxFit
-                .contain, // Mostra a imagem inteira sem distorcer as proporções.
+            fit: BoxFit.contain, // Mostra a imagem inteira sem distorcer as proporções.
             excludeFromSemantics:
                 true, // Usa a descrição acessível do Semantics acima.
           ), // Fecha a imagem da logo.
         ), // Fecha a descrição acessível do símbolo.
-        actions: [
-          // Define os elementos à direita da barra.
-          Builder(
-            // Obtém um contexto que consegue acessar este Scaffold.
-            builder: (context) => IconButton(
-              // Constrói o botão usando esse contexto.
-              tooltip:
-                  'Abrir menu', // Define a dica e a descrição acessível do botão.
-              icon: const Icon(Icons.menu,
-                  size: 30), // Mostra o ícone de três linhas.
-              onPressed: () => Scaffold.of(context)
-                  .openEndDrawer(), // Abre o menu lateral direito ao tocar.
-            ), // Fecha o botão de menu.
-          ), // Fecha o Builder.
-          const SizedBox(width: 8), // Deixa um espaço de 8 à direita do botão.
-        ], // Fecha a lista de elementos da barra.
-      ), // Fecha a barra superior.
-      endDrawer: Drawer(
-        // Cria o menu que desliza a partir da direita.
-        backgroundColor: Colors.black, // Define o fundo preto do menu lateral.
-        surfaceTintColor:
-            Colors.transparent, // Evita uma tonalidade extra sobre o preto.
-        child: SafeArea(
-          // Mantém o conteúdo longe das áreas reservadas do sistema.
-          child: Column(
-            // Organiza os elementos do menu na vertical.
-            crossAxisAlignment: CrossAxisAlignment
-                .stretch, // Estende os elementos pela largura disponível.
-            children: [
-              // Inicia a lista de elementos do menu.
-              Padding(
-                // Adiciona espaço ao redor do cabeçalho.
-                padding: const EdgeInsets.fromLTRB(20, 12, 8,
-                    12), // Espaços à esquerda, acima, à direita e abaixo.
-                child: Row(
-                  // Coloca o título e o botão de fechar lado a lado.
-                  children: [
-                    // Inicia os elementos dessa linha.
-                    const Expanded(
-                      // Reserva para o título o espaço restante da linha.
-                      child: Text(
-                        // Cria o texto do cabeçalho.
-                        'Eventos e festas', // Define o título exibido no menu.
-                        style: TextStyle(
-                          // Configura a aparência do título.
-                          fontSize: 20, // Define o tamanho da fonte.
-                          fontWeight:
-                              FontWeight.bold, // Deixa o título em negrito.
-                        ), // Fecha o estilo do texto.
-                      ), // Fecha o texto do cabeçalho.
-                    ), // Fecha o espaço flexível do título.
-                    IconButton(
-                      // Cria o botão para fechar o menu.
-                      tooltip:
-                          'Fechar menu', // Define a dica e a descrição acessível do botão.
-                      icon: const Icon(Icons.close), // Mostra o ícone de X.
-                      onPressed: () =>
-                          Navigator.pop(context), // Fecha o menu aberto.
-                    ), // Fecha o botão de fechar.
-                  ], // Fecha a lista de elementos da linha.
-                ), // Fecha a linha do cabeçalho.
-              ), // Fecha o espaçamento do cabeçalho.
-              const Divider(
-                  height: 1,
-                  color: Colors.black), // Define a linha divisória preta.
-              ListTile(
-                // Cria uma opção clicável do menu.
-                leading: const Icon(
-                    Icons.home_outlined), // Mostra uma casa à esquerda.
-                title: const Text('Início'), // Define o nome da opção.
-                onTap: () => Navigator.pop(
-                    context), // Fecha o menu, pois já estamos na tela inicial.
-              ), // Fecha a opção Início.
-            ], // Fecha a lista de elementos do menu.
-          ), // Fecha a coluna.
-        ), // Fecha a área segura.
-      ), // Fecha o menu lateral.
+        actions: const [BotaoMenuVibra()],
+      ),
+      endDrawer: const MenuVibra(),
       body: Padding(
         // Acrescenta espaço ao redor do conteúdo.
         padding: const EdgeInsets.all(16), // Define a margem interna da página.
@@ -144,7 +73,8 @@ class _InicioPage extends State<InicioPage> {
             // Inicia os elementos da página.
             const BannersCarrossel(), // Mostra os três banners abaixo do cabeçalho.
             const SizedBox(
-                height: 20), // Separa os banners dos próximos elementos.
+              height: 20,
+            ), // Separa os banners dos próximos elementos.
             Semantics(
               // Identifica o título para leitores de tela.
               header: true, // Marca o texto como um cabeçalho.
@@ -174,7 +104,16 @@ class _InicioPage extends State<InicioPage> {
               ), // Fecha o estilo do subtítulo.
             ), // Fecha o texto do subtítulo.
             const SizedBox(
-                height: 24), // Separa a apresentação da lista de eventos.
+              height: 24,
+            ), // Separa a apresentação da lista de eventos.
+            FilledButton.icon(
+              onPressed: () =>
+                  Navigator.of(context)
+                      .pushNamed<void>(MenuVibra.rotaConvidados),
+              icon: const Icon(Icons.people_outline),
+              label: const Text('Gerenciar convidados'),
+            ),
+            const SizedBox(height: 24),
             TextField(
               controller: _pesquisaController,
               decoration: InputDecoration(
@@ -185,7 +124,7 @@ class _InicioPage extends State<InicioPage> {
                 ),
                 filled: true,
               ),
-              
+
               onChanged: (value) {
                 setState(() {
                   _termoPesquisa = value.trim().toLowerCase();
@@ -193,7 +132,10 @@ class _InicioPage extends State<InicioPage> {
               },
             ),
             const SizedBox(height: 16),
-            ListaEventos(termoPesquisa: _termoPesquisa), // Exibe os três cards abaixo da apresentação.
+            ListaEventos(
+              termoPesquisa: _termoPesquisa,
+              onInscricao: (dados) => widget.convidados.add(dados),
+            ), // Exibe os três cards abaixo da apresentação.
             const SizedBox(height: 24), // Deixa espaço depois do último evento.
           ], // Fecha os elementos da página.
         ), // Fecha a lista rolável.

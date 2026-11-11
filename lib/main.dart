@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart'; // Componentes e tema do Flutter.
 import 'package:flutter/foundation.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart'
-  show databaseFactoryFfi, sqfliteFfiInit;
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
+
+import 'pages/convidados_page.dart';
+import 'widgets/menu_vibra.dart';
 import 'pages/inicio_page.dart'; // Tela inicial com os banners e eventos.
+
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if(kIsWeb) {
+  if (kIsWeb) {
     databaseFactory = databaseFactoryFfiWeb;
-  } else if(defaultTargetPlatform == TargetPlatform.windows) {
+  } else if (defaultTargetPlatform == TargetPlatform.windows) {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
@@ -20,11 +21,18 @@ Future<void> main() async {
   runApp(const VibraApp());
 }
 
-class VibraApp extends StatelessWidget {
+class VibraApp extends StatefulWidget {
   // Configura o aplicativo inteiro.
   const VibraApp({super.key}); // Permite criar o aplicativo como constante.
 
-  @override // Define a configuração visual do aplicativo.
+  @override
+  State<VibraApp> createState() => _VibraAppState();
+}
+
+class _VibraAppState extends State<VibraApp> {
+  final List<Map<String, dynamic>> _convidados = [];
+
+  @override
   Widget build(BuildContext context) {
     // Monta o tema e a primeira página.
     return MaterialApp(
@@ -52,7 +60,11 @@ class VibraApp extends StatelessWidget {
         ), // Fecha o conjunto de cores.
         dividerColor: Colors.black, // Define a cor padrão das divisórias.
       ), // Fecha o tema do aplicativo.
-      home: const InicioPage(), // Abre diretamente a tela de eventos.
+      home: InicioPage(convidados: _convidados),
+      routes: {
+        MenuVibra.rotaConvidados: (_) =>
+            ConvidadosPage(convidados: _convidados),
+      },
     ); // Retorna o aplicativo configurado.
   } // Fecha a construção do aplicativo.
 } // Fecha a classe principal.
