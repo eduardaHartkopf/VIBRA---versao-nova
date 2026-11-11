@@ -1,5 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../theme/vibra_theme.dart';
+
+class BarraVibra extends AppBar {
+  BarraVibra({super.key, required Widget titulo, bool inicio = false})
+    : super(
+        title: titulo,
+        centerTitle: inicio ? true : null,
+        automaticallyImplyLeading: !inicio,
+        shape: inicio
+            ? const Border(bottom: BorderSide(color: VibraCores.texto))
+            : null,
+        actions: const [BotaoMenuVibra()],
+      );
+}
+
 class BotaoMenuVibra extends StatelessWidget {
   const BotaoMenuVibra({super.key});
 

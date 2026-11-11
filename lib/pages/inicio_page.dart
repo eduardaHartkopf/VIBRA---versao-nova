@@ -4,6 +4,7 @@ import '../widgets/banners_carrossel.dart'; // Banners com troca automática.
 import '../widgets/lista_eventos.dart'; // Lista com os três cards de eventos.
 
 import '../widgets/menu_vibra.dart';
+import '../theme/vibra_theme.dart';
 
 class InicioPage extends StatefulWidget {
   const InicioPage({super.key, required this.convidados});
@@ -29,26 +30,9 @@ class _InicioPage extends State<InicioPage> {
     // Monta o cabeçalho e os eventos.
     return Scaffold(
       // Cria a estrutura visual da tela.
-      appBar: AppBar(
-        // Cria a barra superior da tela.
-        automaticallyImplyLeading:
-            false, // Desativa o botão automático à esquerda.
-        backgroundColor:
-            Colors.black, // Define o fundo preto da barra superior.
-        foregroundColor:
-            Colors.white, // Mantém os textos e ícones da barra visíveis.
-        surfaceTintColor:
-            Colors.transparent, // Evita uma tonalidade extra sobre o fundo.
-        elevation: 0, // Remove a sombra da barra.
-        centerTitle: true, // Centraliza o conteúdo colocado no título.
-        shape: const Border(
-          // Define uma borda no cabeçalho.
-          bottom: BorderSide(
-            color: Colors.white,
-            width: 1,
-          ), // Desenha uma linha branca fina na parte inferior.
-        ), // Fecha a borda do cabeçalho.
-        title: Semantics(
+      appBar: BarraVibra(
+        inicio: true,
+        titulo: Semantics(
           // Acrescenta uma descrição para leitores de tela.
           label: 'VIBRA — Eventos e festas', // Nome da marca anunciado pelos leitores de tela.
           child: Image.asset(
@@ -63,7 +47,6 @@ class _InicioPage extends State<InicioPage> {
                 true, // Usa a descrição acessível do Semantics acima.
           ), // Fecha a imagem da logo.
         ), // Fecha a descrição acessível do símbolo.
-        actions: const [BotaoMenuVibra()],
       ),
       endDrawer: const MenuVibra(),
       body: SafeArea(
@@ -94,7 +77,7 @@ class _InicioPage extends State<InicioPage> {
                           TextAlign.center, // Centraliza as linhas do título.
                       style: TextStyle(
                         // Configura a aparência do título.
-                        color: Colors.white, // Define a fonte branca.
+                        color: VibraCores.texto, // Define a fonte branca.
                         fontSize: 28, // Destaca o título principal.
                         fontWeight:
                             FontWeight.bold, // Deixa o título em negrito.
@@ -111,7 +94,7 @@ class _InicioPage extends State<InicioPage> {
                         TextAlign.center, // Centraliza as linhas do subtítulo.
                     style: TextStyle(
                       // Configura a aparência do subtítulo.
-                      color: Colors.white, // Define a fonte branca.
+                      color: VibraCores.texto, // Define a fonte branca.
                       fontSize: 16, // Usa um tamanho menor que o título.
                       height: 1.5, // Facilita a leitura em mais de uma linha.
                     ), // Fecha o estilo do subtítulo.
@@ -129,12 +112,9 @@ class _InicioPage extends State<InicioPage> {
                   const SizedBox(height: 24),
                   TextField(
                     controller: _pesquisaController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Buscar Evento',
-                      prefixIcon: const Icon(Icons.search),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                      prefixIcon: Icon(Icons.search),
                       filled: true,
                     ),
 

@@ -1,3 +1,5 @@
+import '../theme/vibra_theme.dart';
+
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -50,7 +52,7 @@ class _ListaEventosState extends State<ListaEventos> {
         const Text(
           'Eventos em destaque',
           style: TextStyle(
-            color: Color(0xFFB794F6),
+            color: VibraCores.destaque,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
@@ -69,7 +71,7 @@ class _ListaEventosState extends State<ListaEventos> {
                   children: [
                     CircularProgressIndicator(
                       semanticsLabel: 'Carregando eventos',
-                      color: Color(0xFFB794F6),
+                      color: VibraCores.destaque,
                     ),
                     SizedBox(height: 12),
                     Text('Carregando eventos…'),

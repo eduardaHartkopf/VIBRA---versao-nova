@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/menu_vibra.dart';
+import '../theme/vibra_theme.dart';
 
 import '../widgets/card_convidado.dart';
 import 'convidado_form_page.dart';
@@ -58,10 +59,7 @@ class _ConvidadosPageState extends State<ConvidadosPage> {
             child: const Text('Cancelar'),
           ),
           FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(context).colorScheme.error,
-              foregroundColor: Theme.of(context).colorScheme.onError,
-            ),
+            style: VibraTema.botaoDestrutivo(context),
             onPressed: () => Navigator.pop(context, true),
             child: const Text('Excluir'),
           ),
@@ -83,10 +81,7 @@ class _ConvidadosPageState extends State<ConvidadosPage> {
         .where((c) => c['confirmado'] == true)
         .fold<int>(0, (soma, c) => soma + 1 + (c['acompanhantes'] as int));
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Convidados'),
-        actions: const [BotaoMenuVibra()],
-      ),
+      appBar: BarraVibra(titulo: const Text('Convidados')),
       endDrawer: const MenuVibra(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _abrirFormulario(),
@@ -107,11 +102,7 @@ class _ConvidadosPageState extends State<ConvidadosPage> {
                     children: [
                       const Text(
                         'Sua festa começa com as pessoas.',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFB794F6),
-                        ),
+                        style: VibraTema.tituloSecao,
                       ),
                       const SizedBox(height: 12),
                       Text(
@@ -120,7 +111,10 @@ class _ConvidadosPageState extends State<ConvidadosPage> {
                       const SizedBox(height: 8),
                       const Text(
                         'Prévia: os dados ficam apenas nesta sessão e não são salvos ao fechar o app.',
-                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                        style: TextStyle(
+                          color: VibraCores.textoSecundario,
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),
@@ -136,7 +130,7 @@ class _ConvidadosPageState extends State<ConvidadosPage> {
                                 const Icon(
                                   Icons.people_outline,
                                   size: 64,
-                                  color: Color(0xFFB794F6),
+                                  color: VibraCores.destaque,
                                 ),
                                 const SizedBox(height: 16),
                                 const Text(
@@ -151,7 +145,7 @@ class _ConvidadosPageState extends State<ConvidadosPage> {
                                 const Text(
                                   'Adicione o primeiro convidado para começar a organizar sua festa.',
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white70),
+                                  style: VibraTema.textoSecundario,
                                 ),
                                 const SizedBox(height: 16),
                                 OutlinedButton(

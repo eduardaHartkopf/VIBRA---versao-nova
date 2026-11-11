@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 
 import 'pages/convidados_page.dart';
+import 'theme/vibra_theme.dart';
 import 'widgets/menu_vibra.dart';
 import 'pages/inicio_page.dart'; // Tela inicial com os banners e eventos.
 
@@ -40,26 +41,7 @@ class _VibraAppState extends State<VibraApp> {
       title: 'VIBRA — Eventos e festas', // Define o nome do aplicativo.
       debugShowCheckedModeBanner:
           false, // Esconde a faixa de depuração da interface.
-      theme: ThemeData(
-        // Reúne as configurações visuais do aplicativo.
-        useMaterial3: true, // Usa o estilo Material 3.
-        brightness: Brightness.dark, // Usa textos claros sobre o fundo escuro.
-        scaffoldBackgroundColor:
-            Colors.black, // Define o fundo preto das telas.
-        canvasColor: Colors.black, // Define o fundo padrão das superfícies.
-        colorScheme: const ColorScheme.dark(
-          // Configura as cores principais.
-          primary: Colors.white, // Mantém os controles principais claros.
-          onPrimary: Colors.black, // Usa texto preto sobre os controles claros.
-          surface: Colors.black, // Define superfícies pretas.
-          onSurface:
-              Colors.white, // Usa textos e ícones brancos nas superfícies.
-          outline: Colors.black, // Mantém os contornos pretos.
-          outlineVariant:
-              Colors.black, // Mantém os contornos secundários pretos.
-        ), // Fecha o conjunto de cores.
-        dividerColor: Colors.black, // Define a cor padrão das divisórias.
-      ), // Fecha o tema do aplicativo.
+      theme: VibraTema.escuro,
       home: InicioPage(convidados: _convidados),
       routes: {
         MenuVibra.rotaConvidados: (_) =>

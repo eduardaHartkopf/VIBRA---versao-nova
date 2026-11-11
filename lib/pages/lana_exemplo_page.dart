@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/menu_vibra.dart';
+import '../theme/vibra_theme.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -40,7 +41,6 @@ class EventoDetalhesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tema = Theme.of(context);
-    const destaque = Color(0xFFB794F6);
     const ponto = LatLng(-26.77909100084578, -51.050264281978805);
     final localDetalhado = evento.local.toLowerCase().contains(
       'parque das arauc',
@@ -53,10 +53,7 @@ class EventoDetalhesPage extends StatelessWidget {
         : evento.descricao;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detalhes do evento'),
-        actions: const [BotaoMenuVibra()],
-      ),
+      appBar: BarraVibra(titulo: const Text('Detalhes do evento')),
       endDrawer: const MenuVibra(),
       body: Align(
         alignment: Alignment.topCenter,
@@ -78,7 +75,10 @@ class EventoDetalhesPage extends StatelessWidget {
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            colors: [Colors.transparent, Colors.black87],
+                            colors: [
+                              Colors.transparent,
+                              VibraCores.sombraImagem,
+                            ],
                             stops: [0.28, 1],
                           ),
                         ),
@@ -90,7 +90,7 @@ class EventoDetalhesPage extends StatelessWidget {
                         child: Text(
                           evento.nome,
                           style: tema.textTheme.headlineMedium?.copyWith(
-                            color: Colors.white,
+                            color: VibraCores.sobreImagem,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -106,18 +106,14 @@ class EventoDetalhesPage extends StatelessWidget {
                 children: [
                   for (final (icone, texto) in dadosEvento(evento))
                     Chip(
-                      avatar: Icon(icone, color: corDadosEvento, size: 18),
+                      avatar: Icon(icone, color: VibraCores.destaque, size: 18),
                       label: Text(texto),
                     ),
                 ],
               ),
               const SizedBox(height: 16),
               FilledButton.icon(
-                style: FilledButton.styleFrom(
-                  backgroundColor: destaque,
-                  foregroundColor: Colors.black,
-                  minimumSize: const Size.fromHeight(52),
-                ),
+                style: VibraTema.botaoDestaque,
                 onPressed: () => _inscrever(context),
                 icon: const Icon(Icons.how_to_reg),
                 label: const Text('Inscrever-se no evento'),
@@ -165,7 +161,7 @@ class EventoDetalhesPage extends StatelessWidget {
                               height: 48,
                               child: Icon(
                                 Icons.location_on,
-                                color: destaque,
+                                color: VibraCores.destaque,
                                 size: 40,
                               ),
                             ),

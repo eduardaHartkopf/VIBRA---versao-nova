@@ -1,3 +1,5 @@
+import '../theme/vibra_theme.dart';
+
 import 'dart:math' as math;
 
 import '../models/evento.dart';
@@ -11,13 +13,8 @@ class CardEvento extends StatelessWidget {
   final Evento evento;
   final VoidCallback? onTap; // Guarda a ação do clique, quando existir.
 
-  static const _titulo = TextStyle(
-    color: Colors.white,
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
-    height: 1.25,
-  );
-  static const _detalhe = TextStyle(color: Colors.white70, fontSize: 14);
+  static final _titulo = VibraTema.tituloCard.copyWith(height: 1.25);
+  static const _detalhe = VibraTema.detalheCard;
 
   static double _tamanhoImagem(double largura) =>
       (largura * 0.24).clamp(44.0, 128.0).toDouble();
@@ -63,17 +60,11 @@ class CardEvento extends StatelessWidget {
           margin: const EdgeInsets.only(
             bottom: 14,
           ), // Separa este card do próximo.
-          color: const Color(0xFF141416), // Define um fundo cinza bem escuro.
-          surfaceTintColor: Colors.transparent, // Preserva a cor do fundo.
-          elevation: 0, // Remove a sombra da caixa.
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-          ), // Arredonda os cantos do card.
           child: InkWell(
             // Permite clicar em toda a área do card.
             onTap: onTap, // Executa a ação recebida da lista de eventos.
             borderRadius: BorderRadius.circular(
-              18,
+              VibraTema.raioCard,
             ), // Arredonda o efeito visual do toque.
             child: Padding(
               // Afasta o conteúdo das bordas da caixa.
@@ -123,7 +114,11 @@ class CardEvento extends StatelessWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Icon(icone, color: corDadosEvento, size: 18),
+                                Icon(
+                                  icone,
+                                  color: VibraCores.destaque,
+                                  size: 18,
+                                ),
                                 const SizedBox(width: 6),
                                 Expanded(child: Text(texto, style: _detalhe)),
                               ],

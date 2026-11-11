@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/menu_vibra.dart';
+import '../theme/vibra_theme.dart';
 
 class ConvidadoFormPage extends StatefulWidget {
   const ConvidadoFormPage({super.key, this.convidado, this.evento});
@@ -51,9 +52,8 @@ class _ConvidadoFormPageState extends State<ConvidadoFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: const MenuVibra(),
-      appBar: AppBar(
-        actions: const [BotaoMenuVibra()],
-        title: Text(
+      appBar: BarraVibra(
+        titulo: Text(
           widget.evento != null
               ? 'Inscrição no evento'
               : _editando
@@ -70,14 +70,7 @@ class _ConvidadoFormPageState extends State<ConvidadoFormPage> {
               child: ListView(
                 padding: const EdgeInsets.all(20),
                 children: [
-                  const Text(
-                    'Quem vai à festa?',
-                    style: TextStyle(
-                      color: Color(0xFFB794F6),
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  const Text('Quem vai à festa?', style: VibraTema.tituloSecao),
                   if (widget.evento case final evento?)
                     Text(
                       evento,
@@ -86,7 +79,7 @@ class _ConvidadoFormPageState extends State<ConvidadoFormPage> {
                   const SizedBox(height: 8),
                   const Text(
                     'Preencha os dados e indique se a presença já foi confirmada.',
-                    style: TextStyle(color: Colors.white70),
+                    style: VibraTema.textoSecundario,
                   ),
                   const SizedBox(height: 24),
                   TextFormField(
@@ -97,8 +90,6 @@ class _ConvidadoFormPageState extends State<ConvidadoFormPage> {
                     decoration: const InputDecoration(
                       labelText: 'Nome do convidado',
                       prefixIcon: Icon(Icons.person_outline),
-                      errorMaxLines: 2,
-                      border: OutlineInputBorder(),
                     ),
                     validator: (valor) {
                       final nome = valor?.trim() ?? '';
@@ -118,8 +109,6 @@ class _ConvidadoFormPageState extends State<ConvidadoFormPage> {
                       labelText: 'Quantidade de acompanhantes',
                       helperText: 'Use 0 se o convidado for sozinho.',
                       prefixIcon: Icon(Icons.group_outlined),
-                      errorMaxLines: 2,
-                      border: OutlineInputBorder(),
                     ),
                     validator: (valor) {
                       final texto = valor?.trim() ?? '';
@@ -133,14 +122,11 @@ class _ConvidadoFormPageState extends State<ConvidadoFormPage> {
                   const SizedBox(height: 16),
                   if (widget.evento == null)
                     SwitchListTile(
-                      tileColor: const Color(0xFF211B2C),
+                      tileColor: VibraCores.painel,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      activeThumbColor: Colors.black,
-                      activeTrackColor: const Color(0xFFB794F6),
-                      inactiveThumbColor: Colors.white,
-                      inactiveTrackColor: const Color(0xFF50465D),
+
                       title: const Text('Presença confirmada'),
                       subtitle: const Text(
                         'Inclui o convidado e seus acompanhantes no total.',

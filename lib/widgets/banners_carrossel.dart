@@ -1,3 +1,5 @@
+import '../theme/vibra_theme.dart';
+
 import 'package:flutter/material.dart'; // Componentes visuais do Flutter.
 import 'package:carousel_slider/carousel_slider.dart'
     as carousel; // Biblioteca do carrossel.
@@ -93,11 +95,11 @@ class _BannersCarrosselState extends State<BannersCarrossel> {
                     // Cria o botão de voltar.
                     tooltip: 'Banner anterior', // Descreve a ação do botão.
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.black54,
+                      backgroundColor: VibraCores.fundoSobreImagem,
                     ), // Destaca a seta sobre fotos claras.
                     icon: const Icon(
                       Icons.chevron_left,
-                      color: Colors.white,
+                      color: VibraCores.texto,
                     ), // Mostra a seta branca para a esquerda.
                     onPressed: () => _controller
                         .previousPage(), // Volta para o banner anterior.
@@ -110,11 +112,11 @@ class _BannersCarrosselState extends State<BannersCarrossel> {
                     // Cria o botão de avançar.
                     tooltip: 'Próximo banner', // Descreve a ação do botão.
                     style: IconButton.styleFrom(
-                      backgroundColor: Colors.black54,
+                      backgroundColor: VibraCores.fundoSobreImagem,
                     ), // Destaca a seta sobre fotos claras.
                     icon: const Icon(
                       Icons.chevron_right,
-                      color: Colors.white,
+                      color: VibraCores.texto,
                     ), // Mostra a seta branca para a direita.
                     onPressed: () =>
                         _controller.nextPage(), // Avança para o próximo banner.
@@ -140,8 +142,8 @@ class _BannersCarrosselState extends State<BannersCarrossel> {
                 // Desenha a bolinha do indicador.
                 _bannerAtual == index ? Icons.circle : Icons.circle_outlined, // Preenche a bolinha do banner atual.
                 size: 10, // Define o tamanho da bolinha.
-                color:
-                    Colors.white, // Mantém o indicador visível no fundo preto.
+                color: VibraCores
+                    .texto, // Mantém o indicador visível no fundo preto.
               ), // Fecha o ícone do indicador.
             ); // Fecha o botão indicador.
           }), // Fecha a criação dos indicadores.
