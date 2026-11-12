@@ -10,6 +10,7 @@ class CardConvidado extends StatelessWidget {
     required this.confirmado,
     required this.onEditar,
     required this.onExcluir,
+    required this.onAlterarConfirmacao,
   });
 
   final String nome;
@@ -17,6 +18,7 @@ class CardConvidado extends StatelessWidget {
   final bool confirmado;
   final VoidCallback onEditar;
   final VoidCallback onExcluir;
+  final ValueChanged<bool> onAlterarConfirmacao;
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +65,12 @@ class CardConvidado extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Presença confirmada'),
+              value: confirmado,
+              onChanged: onAlterarConfirmacao,
             ),
           ],
         ),

@@ -7,9 +7,7 @@ import '../widgets/menu_vibra.dart';
 import '../theme/vibra_theme.dart';
 
 class InicioPage extends StatefulWidget {
-  const InicioPage({super.key, required this.convidados});
-
-  final List<Map<String, dynamic>> convidados;
+  const InicioPage({super.key});
 
   @override
   State<InicioPage> createState() => _InicioPage();
@@ -34,7 +32,8 @@ class _InicioPage extends State<InicioPage> {
         inicio: true,
         titulo: Semantics(
           // Acrescenta uma descrição para leitores de tela.
-          label: 'VIBRA — Eventos e festas', // Nome da marca anunciado pelos leitores de tela.
+          label:
+              'VIBRA — Eventos e festas', // Nome da marca anunciado pelos leitores de tela.
           child: Image.asset(
             // Carrega a logo incluída nos arquivos do aplicativo.
             'assets/images/logo_vibra.png', // Caminho da imagem registrado no pubspec.yaml.
@@ -42,7 +41,8 @@ class _InicioPage extends State<InicioPage> {
                 .clamp(64.0, 140.0)
                 .toDouble(), // Define a largura disponível para a logo.
             height: 48, // Mantém a logo dentro da altura da barra superior.
-            fit: BoxFit.contain, // Mostra a imagem inteira sem distorcer as proporções.
+            fit: BoxFit
+                .contain, // Mostra a imagem inteira sem distorcer as proporções.
             excludeFromSemantics:
                 true, // Usa a descrição acessível do Semantics acima.
           ), // Fecha a imagem da logo.
@@ -56,9 +56,8 @@ class _InicioPage extends State<InicioPage> {
               constraints: const BoxConstraints(maxWidth: 960),
               child: ListView(
                 padding: EdgeInsets.symmetric(
-                  horizontal: (limites.maxWidth * 0.04)
-                      .clamp(8.0, 32.0)
-                      .toDouble(),
+                  horizontal:
+                      (limites.maxWidth * 0.04).clamp(8.0, 32.0).toDouble(),
                   vertical: 16,
                 ),
                 children: [
@@ -103,9 +102,8 @@ class _InicioPage extends State<InicioPage> {
                     height: 24,
                   ), // Separa a apresentação da lista de eventos.
                   FilledButton.icon(
-                    onPressed: () =>
-                        Navigator.of(context)
-                            .pushNamed<void>(MenuVibra.rotaConvidados),
+                    onPressed: () => Navigator.of(context)
+                        .pushNamed<void>(MenuVibra.rotaConvidados),
                     icon: const Icon(Icons.people_outline),
                     label: const Text('Gerenciar convidados'),
                   ),
@@ -117,7 +115,6 @@ class _InicioPage extends State<InicioPage> {
                       prefixIcon: Icon(Icons.search),
                       filled: true,
                     ),
-
                     onChanged: (value) {
                       setState(() {
                         _termoPesquisa = value.trim().toLowerCase();
@@ -127,7 +124,6 @@ class _InicioPage extends State<InicioPage> {
                   const SizedBox(height: 16),
                   ListaEventos(
                     termoPesquisa: _termoPesquisa,
-                    onInscricao: (dados) => widget.convidados.add(dados),
                   ), // Exibe os três cards abaixo da apresentação.
                   const SizedBox(
                     height: 24,

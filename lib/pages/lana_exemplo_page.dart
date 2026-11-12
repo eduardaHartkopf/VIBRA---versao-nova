@@ -7,6 +7,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../models/evento.dart';
+import '../models/convidado.dart';
+import '../database/database_helper.dart';
 import '../widgets/dados_evento.dart';
 import 'convidado_form_page.dart';
 
@@ -14,18 +16,25 @@ class EventoDetalhesPage extends StatelessWidget {
   const EventoDetalhesPage({
     super.key,
     required this.evento,
-    required this.onInscricao,
   });
 
   final Evento evento;
-  final ValueChanged<Map<String, dynamic>> onInscricao;
 
   Future<void> _inscrever(BuildContext context) async {
     final dados = await Navigator.of(context).push<Map<String, dynamic>>(
       MaterialPageRoute(builder: (_) => ConvidadoFormPage(evento: evento.nome)),
     );
     if (!context.mounted || dados == null) return;
-    onInscricao({...dados, 'eventoId': evento.id, 'eventoNome': evento.nome});
+    await DatabaseHelper.instance.inserirConvidado(
+      Convidado(
+        nome: dados['nome'] as String,
+        acompanhantes: dados['acompanhantes'] as int,
+        confirmado: dados['confirmado'] as bool,
+        eventoId: evento.id,
+        eventoNome: evento.nome,
+      ),
+    );
+    if (!context.mounted) return;
     final navigator = Navigator.of(context);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -43,10 +52,9 @@ class EventoDetalhesPage extends StatelessWidget {
     final tema = Theme.of(context);
     const ponto = LatLng(-26.77909100084578, -51.050264281978805);
     final localDetalhado = evento.local.toLowerCase().contains(
-      'parque das arauc',
-    );
-    final descricao =
-        evento.nome.startsWith('Zara Larsson') &&
+          'parque das arauc',
+        );
+    final descricao = evento.nome.startsWith('Zara Larsson') &&
             evento.descricao ==
                 'Prepare-se para uma noite inesquecível ao som de Lana Del Rey!'
         ? 'Uma apresentação de Zara Larsson com seus sucessos pop.'

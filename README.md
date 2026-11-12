@@ -7,10 +7,10 @@ Aplicativo Flutter de eventos e festas desenvolvido para o trabalho final de Pro
 - Tema preto, logo VIBRA, menu lateral e linha branca abaixo do cabeçalho.
 - Três banners com passagem automática a cada quatro segundos, setas e indicadores.
 - Título e subtítulo centralizados.
-- Três cards de eventos com fotos, nomes e espaços para local e data.
-- Navegação do card da Lana Del Rey para uma página de exemplo com contador e retorno.
+- Cards de eventos com detalhes, busca, mapa e inscrição de convidados.
+- Cadastro, edição, exclusão e confirmação de convidados persistidos em SQLite.
 
-Os eventos são exemplos visuais. Local, data e horário ainda estão a definir. A página da Lana Del Rey é uma demonstração da navegação. Cadastro de convidados, confirmação, resumo e SQLite ainda precisam ser implementados para atender ao trabalho final.
+Os eventos são definidos no código Dart e não dependem do banco de dados. O SQLite armazena os convidados em uma única tabela (`convidados`), incluindo nome, acompanhantes, confirmação e dados opcionais do evento escolhido.
 
 ## Executar
 
@@ -32,7 +32,13 @@ lib/
   main.dart                       Inicialização e tema do VIBRA
   pages/
     inicio_page.dart              Cabeçalho, menu e apresentação
-    lana_exemplo_page.dart        Página de exemplo com contador
+    lana_exemplo_page.dart        Detalhes e inscrição em eventos
+    convidados_page.dart          CRUD e resumo de convidados
+  database/
+    database_helper.dart          Persistência SQLite e migração
+  models/
+    evento.dart                   Dados dos eventos mantidos em Dart
+    convidado.dart                Modelo persistido de convidado
   widgets/
     banners_carrossel.dart        Carrossel de imagens
     lista_eventos.dart            Dados de exemplo e navegação dos cards
@@ -46,6 +52,10 @@ windows/                          Arquivos necessários para executar no Windows
 
 - Flutter Material: componentes, tema, ícones e navegação.
 - carousel_slider: carrossel com troca automática.
+- sqflite: persistência SQLite no Android.
+- sqflite_common_ffi: persistência SQLite no Windows Desktop.
+
+Os eventos são definidos em Dart e não dependem do banco. A persistência usa somente a tabela `convidados`, com `sqflite` no Android e `sqflite_common_ffi` no Windows. Ao atualizar uma instalação antiga, a migração remove a tabela legada `eventos` e mantém linhas de convidados caso a tabela antiga contenha os respectivos campos.
 
 ## Antes de compactar ou enviar
 
